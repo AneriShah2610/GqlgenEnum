@@ -1,0 +1,35 @@
+schema{
+    query: MyQuery
+    mutation: MyMutation
+}
+interface Node{
+    id: ID!
+}
+type ToDo implements Node{
+    id: ID!
+    text: String!
+    state: State!
+    verified: Boolean! @fieldLogging
+}
+
+type MyQuery{
+    todos: [ToDo!]!
+    todo(id: ID!): ToDo
+}
+
+type MyMutation {
+  createTodo(todo: TodoInput!,state: State!): ToDo!
+}
+input TodoInput {
+  text: String!
+}
+
+enum State {
+  NOT_YET
+  DONE
+}
+directive @enumLogging on ENUM
+
+extend enum State @enumLogging
+
+directive @fieldLogging on FIELD_DEFINITION
